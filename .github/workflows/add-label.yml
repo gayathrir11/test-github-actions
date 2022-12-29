@@ -10,6 +10,11 @@ jobs:
     permissions:
       issues: write
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
       - uses: actions/github-script@v6
         with:
           script: |
@@ -19,3 +24,9 @@ jobs:
               repo: context.repo.repo,
               labels: ["triage"]
             })
+      - name: Label new issue
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_LABEL: 'bug'
+        working-directory: ./scripts/github-bot
+        run: node ./labelNewIssue.js

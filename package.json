@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/gayathrir11/test-github-actions#readme",
   "dependencies": {
+    "@actions/github": "^5.1.1",
     "express": "^4.18.2"
   }
 }

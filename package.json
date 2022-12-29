@@ -1,5 +1,6 @@
 {
   "name": "test-github-actions",
+  "type": "module",
   "version": "1.0.0",
   "description": "test app",
   "main": "index.js",

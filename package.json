@@ -1,0 +1,22 @@
+{
+  "name": "test-github-actions",
+  "version": "1.0.0",
+  "description": "test app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gayathrir11/test-github-actions.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gayathrir11/test-github-actions/issues"
+  },
+  "homepage": "https://github.com/gayathrir11/test-github-actions#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

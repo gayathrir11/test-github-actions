@@ -18,7 +18,9 @@
   },
   "homepage": "https://github.com/gayathrir11/test-github-actions#readme",
   "dependencies": {
+    "@actions/core": "^1.10.0",
     "@actions/github": "^5.1.1",
+    "chalk": "^5.2.0",
     "express": "^4.18.2"
   }
 }

@@ -4,9 +4,7 @@
   "version": "1.0.0",
   "description": "test app",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gayathrir11/test-github-actions.git"
@@ -22,5 +20,8 @@
     "@actions/github": "^5.1.1",
     "chalk": "^5.2.0",
     "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.29.1"
   }
 }

@@ -45,13 +45,13 @@ const prepareNewStandardRelease = async () => {
     let existingChangesetFileContent;
     try {
       existingChangesetFile = (
-        await octokit.rest.repos.getContents({
+        await octokit.rest.repos.getContent({
           path: PACKAGE_JSON_PATH,
           ...github.context.repo,
         })
       ).data;
       existingChangesetFileContent = Buffer.from(
-        existingChangesetFile.data.content,
+        existingChangesetFile.data,
         "base64"
       ).toString("utf-8");
     } catch (error) {

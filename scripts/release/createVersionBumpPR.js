@@ -59,16 +59,20 @@ const prepareNewStandardRelease = async () => {
       process.exit(1);
     }
 
-    await octokit.rest.repos.createOrUpdateFileContents({
-      path: PACKAGE_JSON_PATH,
-      message: "prepare for new release",
-      branch: PREPARE_RELEASE_PR_BRANCH_NAME,
-      content: existingChangesetFile.content,
-      // 'sha' is required when we update the file, i.e the changeset file exists but its content is stale
-      // See https://docs.github.com/en/rest/reference/repos#create-or-update-file-contents
-      sha: existingChangesetFile?.sha,
-      ...github.context.repo,
-    });
+    execSync(`git add package.json`);
+  execSync(`git commit -m "Bump version to "`);
+  execSync(`git push origin ${PREPARE_RELEASE_PR_BRANCH_NAME}`);
+
+    // await octokit.rest.repos.createOrUpdateFileContents({
+    //   path: PACKAGE_JSON_PATH,
+    //   message: "prepare for new release",
+    //   branch: PREPARE_RELEASE_PR_BRANCH_NAME,
+    //   content: existingChangesetFile.content,
+    //   // 'sha' is required when we update the file, i.e the changeset file exists but its content is stale
+    //   // See https://docs.github.com/en/rest/reference/repos#create-or-update-file-contents
+    //   sha: existingChangesetFile?.sha,
+    //   ...github.context.repo,
+    // });
 
     const bumpVersionPR = (
       await octokit.rest.pulls.create({

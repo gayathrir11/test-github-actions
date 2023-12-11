@@ -50,7 +50,7 @@ const prepareNewStandardRelease = async () => {
           ...github.context.repo,
         })
       ).data;
-      existingChangesetFileContent = existingChangesetFileContent.toString("utf-8");
+      existingChangesetFileContent = existingChangesetFile.toString("utf-8");
     } catch (error) {
       githubActionCore.error(`Failed to find file. Error:\n${error.message}\n`);
       process.exit(1);

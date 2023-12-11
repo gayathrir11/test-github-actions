@@ -1,6 +1,7 @@
 import * as github from '@actions/github';
 import * as githubActionCore from '@actions/core';
 import chalk from 'chalk';
+import { execSync } from 'child_process';
 
 const DEFAULT_BRANCH_NAME = 'main';
 const PREPARE_RELEASE_PR_BRANCH_NAME = 'bot/prepare-release';
@@ -38,7 +39,7 @@ const prepareNewStandardRelease = async () => {
     });
 
     // Use npm version to update the version based on the specified type
-    execSync(`npm version ${bumpType}`, { stdio: 'inherit' });
+    // execSync(`npm version ${bumpType}`, { stdio: 'inherit' });
 
     const bumpVersionPR = (
       await octokit.rest.pulls.create({

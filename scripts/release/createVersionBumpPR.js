@@ -47,7 +47,7 @@ const prepareNewStandardRelease = async () => {
     try {
       existingChangesetFile = (
         await octokit.rest.repos.getContent({
-          path: changesetFilePath,
+          path: PACKAGE_JSON_PATH,
           ...github.context.repo,
         })
       ).data;

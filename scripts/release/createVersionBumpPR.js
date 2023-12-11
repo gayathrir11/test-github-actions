@@ -51,7 +51,7 @@ const prepareNewStandardRelease = async () => {
         })
       ).data;
       existingChangesetFileContent = Buffer.from(
-        existingChangesetFile.data,
+        existingChangesetFile.toString(),
         "base64"
       ).toString("utf-8");
     } catch (error) {

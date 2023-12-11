@@ -43,6 +43,7 @@ const prepareNewStandardRelease = async () => {
     execSync(`npm version ${bumpType}`, { stdio: 'inherit' });
 
     let existingChangesetFile;
+    let existingChangesetFileContent;
     try {
       existingChangesetFile = (
         await octokit.rest.repos.getContent({
@@ -50,6 +51,7 @@ const prepareNewStandardRelease = async () => {
           ...github.context.repo,
         })
       ).data;
+      existingChangesetFileContent = Buffer.from(existingChangesetFile.data.content, 'base64').toString('utf-8');
     } catch (error) {
       githubActionCore.error(
         `Failed to find file. Error:\n${error.message}\n`,

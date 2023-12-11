@@ -15,6 +15,7 @@ const prepareNewStandardRelease = async () => {
   console.log(`Creating release version bump PR...`);
 
   try {
+    
     const defaultBranchRef = (
       await octokit.rest.git.getRef({
         ref: `heads/${DEFAULT_BRANCH_NAME}`,
@@ -41,16 +42,23 @@ const prepareNewStandardRelease = async () => {
     // Use npm version to update the version based on the specified type
     execSync(`npm version ${bumpType}`, { stdio: 'inherit' });
 
-    // await octokit.rest.repos.createOrUpdateFileContents({
-    //   path: changesetFilePath,
-    //   message: 'prepare for new release',
-    //   branch: CHANGESET_PR_BRANCH_NAME,
-    //   content: newChangesetContent,
-    //   // 'sha' is required when we update the file, i.e the changeset file exists but its content is stale
-    //   // See https://docs.github.com/en/rest/reference/repos#create-or-update-file-contents
-    //   sha: existingChangesetFile?.sha,
-    //   ...github.context.repo,
-    // });
+    existingChangesetFile = (
+      await octokit.rest.repos.getContent({
+        path: PACKAGE_JSON_PATH,
+        ...github.context.repo,
+      })
+    ).data;
+
+    await octokit.rest.repos.createOrUpdateFileContents({
+      path: PACKAGE_JSON_PATH,
+      message: 'prepare for new release',
+      branch: CHANGESET_PR_BRANCH_NAME,
+      content: existingChangesetFile,
+      // 'sha' is required when we update the file, i.e the changeset file exists but its content is stale
+      // See https://docs.github.com/en/rest/reference/repos#create-or-update-file-contents
+      sha: existingChangesetFile?.sha,
+      ...github.context.repo,
+    });
 
     const bumpVersionPR = (
       await octokit.rest.pulls.create({

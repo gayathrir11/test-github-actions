@@ -62,6 +62,16 @@ const prepareNewStandardRelease = async () => {
   //   execSync(`git add package.json`);
   // execSync(`git commit -m "Bump version to "`);
   execSync(`git branch`);
+  const localCommitSha = execSync(`git rev-parse ${PREPARE_RELEASE_PR_BRANCH_NAME}`).toString().trim();
+
+    // Force push to update the branch reference
+    await octokit.rest.git.updateRef({
+      owner,
+      repo,
+      ref: `heads/${PREPARE_RELEASE_PR_BRANCH_NAME}`,
+      sha: localCommitSha,
+      force: true,
+    });
 
     // await octokit.rest.repos.createOrUpdateFileContents({
     //   path: PACKAGE_JSON_PATH,

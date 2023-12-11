@@ -45,7 +45,13 @@ const prepareNewStandardRelease = async () => {
     let existingChangesetFile;
     let existingChangesetFileContent;
     try {
-      existingChangesetFile = fs.readFileSync('package.json', 'base64')
+      existingChangesetFile = (
+        await octokit.rest.repos.getContent({
+          path: changesetFilePath,
+          ...github.context.repo,
+        })
+      ).data;
+      existingChangesetFileContent = fs.readFileSync('package.json', 'base64')
       // existingChangesetFileContent = Buffer.from(
       //   existingChangesetFileContent,
       //   "base64"
@@ -73,10 +79,10 @@ const prepareNewStandardRelease = async () => {
       path: PACKAGE_JSON_PATH,
       message: "prepare for new release",
       branch: PREPARE_RELEASE_PR_BRANCH_NAME,
-      content: existingChangesetFile,
+      content: existingChangesetFileContent,
       // 'sha' is required when we update the file, i.e the changeset file exists but its content is stale
       // See https://docs.github.com/en/rest/reference/repos#create-or-update-file-contents
-      // sha: existingChangesetFile?.sha,
+      sha: existingChangesetFile?.sha,
       ...github.context.repo,
     });
 

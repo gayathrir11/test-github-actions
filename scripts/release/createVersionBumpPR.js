@@ -61,7 +61,7 @@ const prepareNewStandardRelease = async () => {
 
   //   execSync(`git add package.json`);
   // execSync(`git commit -m "Bump version to "`);
-  execSync(`git push -f origin ${PREPARE_RELEASE_PR_BRANCH_NAME}`);
+  execSync(`git branch`);
 
     // await octokit.rest.repos.createOrUpdateFileContents({
     //   path: PACKAGE_JSON_PATH,

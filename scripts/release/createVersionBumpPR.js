@@ -60,7 +60,7 @@ const prepareNewStandardRelease = async () => {
     await octokit.rest.repos.createOrUpdateFileContents({
       path: PACKAGE_JSON_PATH,
       message: 'prepare for new release',
-      branch: CHANGESET_PR_BRANCH_NAME,
+      branch: PREPARE_RELEASE_PR_BRANCH_NAME,
       content: existingChangesetFile,
       // 'sha' is required when we update the file, i.e the changeset file exists but its content is stale
       // See https://docs.github.com/en/rest/reference/repos#create-or-update-file-contents

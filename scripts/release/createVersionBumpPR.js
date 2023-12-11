@@ -24,7 +24,7 @@ const prepareNewStandardRelease = async () => {
     // clean the PR branch just in case
     try {
       await octokit.rest.git.deleteRef({
-        ref: `heads/${CHANGESET_PR_BRANCH_NAME}`,
+        ref: `heads/${PREPARE_RELEASE_PR_BRANCH_NAME}`,
         ...github.context.repo,
       });
     } catch (e) {
@@ -39,7 +39,18 @@ const prepareNewStandardRelease = async () => {
     });
 
     // Use npm version to update the version based on the specified type
-    // execSync(`npm version ${bumpType}`, { stdio: 'inherit' });
+    execSync(`npm version ${bumpType}`, { stdio: 'inherit' });
+
+    // await octokit.rest.repos.createOrUpdateFileContents({
+    //   path: changesetFilePath,
+    //   message: 'prepare for new release',
+    //   branch: CHANGESET_PR_BRANCH_NAME,
+    //   content: newChangesetContent,
+    //   // 'sha' is required when we update the file, i.e the changeset file exists but its content is stale
+    //   // See https://docs.github.com/en/rest/reference/repos#create-or-update-file-contents
+    //   sha: existingChangesetFile?.sha,
+    //   ...github.context.repo,
+    // });
 
     const bumpVersionPR = (
       await octokit.rest.pulls.create({

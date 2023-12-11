@@ -9,7 +9,7 @@ const PREPARE_RELEASE_PR_BRANCH_NAME = 'bot/prepare-release';
 const prepareNewStandardRelease = async () => {
   const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
   const bumpType = process.env.BUMP_TYPE;
-  const PACKAGE_JSON_PATH = '../package.json';
+  const PACKAGE_JSON_PATH = './package.json';
 
   // Push release version bump changeset
   console.log(`Creating release version bump PR...`);

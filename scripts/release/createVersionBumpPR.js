@@ -1,21 +1,21 @@
-import * as github from '@actions/github';
-import * as githubActionCore from '@actions/core';
-import chalk from 'chalk';
-import { execSync } from 'child_process';
+import * as github from "@actions/github";
+import * as githubActionCore from "@actions/core";
+import chalk from "chalk";
+import { execSync } from "child_process";
+import * as fs from 'fs';
 
-const DEFAULT_BRANCH_NAME = 'main';
-const PREPARE_RELEASE_PR_BRANCH_NAME = 'bot/prepare-release';
+const DEFAULT_BRANCH_NAME = "main";
+const PREPARE_RELEASE_PR_BRANCH_NAME = "bot/prepare-release";
 
 const prepareNewStandardRelease = async () => {
   const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
   const bumpType = process.env.BUMP_TYPE;
-  const PACKAGE_JSON_PATH = 'package.json';
+  const PACKAGE_JSON_PATH = "package.json";
 
   // Push release version bump changeset
   console.log(`Creating release version bump PR...`);
 
   try {
-    
     const defaultBranchRef = (
       await octokit.rest.git.getRef({
         ref: `heads/${DEFAULT_BRANCH_NAME}`,
@@ -40,7 +40,7 @@ const prepareNewStandardRelease = async () => {
     });
 
     // Use npm version to update the version based on the specified type
-    execSync(`npm version ${bumpType}`, { stdio: 'inherit' });
+    execSync(`npm version ${bumpType}`, { stdio: "inherit" });
 
     let existingChangesetFile;
     let existingChangesetFileContent;
@@ -51,19 +51,35 @@ const prepareNewStandardRelease = async () => {
           ...github.context.repo,
         })
       ).data;
-      existingChangesetFileContent = Buffer.from(existingChangesetFile.data.content, 'base64').toString('utf-8');
+      existingChangesetFileContent = fs.readFileSync('package.json', 'base64')
+      // existingChangesetFileContent = Buffer.from(
+      //   existingChangesetFileContent,
+      //   "base64"
+      // ).toString("utf-8");
     } catch (error) {
-      githubActionCore.error(
-        `Failed to find file. Error:\n${error.message}\n`,
-      );
+      githubActionCore.error(`Failed to find file. Error:\n${error.message}\n`);
       process.exit(1);
     }
 
+  //   execSync(`git add package.json`);
+  // execSync(`git commit -m "Bump version to "`);
+  // execSync(`git branch`);
+  // const localCommitSha = execSync(`git rev-parse refs/heads/${PREPARE_RELEASE_PR_BRANCH_NAME}`).toString().trim();
+
+  //   // Force push to update the branch reference
+  //   await octokit.rest.git.updateRef({
+  //     owner,
+  //     repo,
+  //     ref: `heads/${PREPARE_RELEASE_PR_BRANCH_NAME}`,
+  //     sha: localCommitSha,
+  //     force: true,
+  //   });
+
     await octokit.rest.repos.createOrUpdateFileContents({
       path: PACKAGE_JSON_PATH,
-      message: 'prepare for new release',
+      message: "prepare for new release",
       branch: PREPARE_RELEASE_PR_BRANCH_NAME,
-      content: existingChangesetFile,
+      content: existingChangesetFileContent,
       // 'sha' is required when we update the file, i.e the changeset file exists but its content is stale
       // See https://docs.github.com/en/rest/reference/repos#create-or-update-file-contents
       sha: existingChangesetFile?.sha,
@@ -73,7 +89,7 @@ const prepareNewStandardRelease = async () => {
     const bumpVersionPR = (
       await octokit.rest.pulls.create({
         title: `Prepare New ${
-          bumpType === 'major' ? 'Release' : 'Iteration Release'
+          bumpType === "major" ? "Release" : "Iteration Release"
         }`,
         head: PREPARE_RELEASE_PR_BRANCH_NAME,
         base: DEFAULT_BRANCH_NAME,
@@ -82,12 +98,12 @@ const prepareNewStandardRelease = async () => {
     ).data;
     console.log(
       chalk.green(
-        `\u2713 Created a PR to push release version bump : ${bumpVersionPR.html_url}`,
-      ),
+        `\u2713 Created a PR to push release version bump : ${bumpVersionPR.html_url}`
+      )
     );
   } catch (error) {
     githubActionCore.error(
-      `Failed to create PR for next release version bump. Error:\n${error.message}\n`,
+      `Failed to create PR for next release version bump. Error:\n${error.message}\n`
     );
     process.exit(1);
   }

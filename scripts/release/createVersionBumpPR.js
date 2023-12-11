@@ -42,12 +42,19 @@ const prepareNewStandardRelease = async () => {
     // Use npm version to update the version based on the specified type
     execSync(`npm version ${bumpType}`, { stdio: 'inherit' });
 
-    existingChangesetFile = (
-      await octokit.rest.repos.getContent({
-        path: PACKAGE_JSON_PATH,
-        ...github.context.repo,
-      })
-    ).data;
+    try {
+      existingChangesetFile = (
+        await octokit.rest.repos.getContent({
+          path: PACKAGE_JSON_PATH,
+          ...github.context.repo,
+        })
+      ).data;
+    } catch (error) {
+      githubActionCore.error(
+        `Failed to find file. Error:\n${error.message}\n`,
+      );
+      process.exit(1);
+    }
 
     await octokit.rest.repos.createOrUpdateFileContents({
       path: PACKAGE_JSON_PATH,

@@ -42,6 +42,7 @@ const prepareNewStandardRelease = async () => {
     // Use npm version to update the version based on the specified type
     execSync(`npm version ${bumpType}`, { stdio: 'inherit' });
 
+    let existingChangesetFile;
     try {
       existingChangesetFile = (
         await octokit.rest.repos.getContent({

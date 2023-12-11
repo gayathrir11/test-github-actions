@@ -63,7 +63,7 @@ const prepareNewStandardRelease = async () => {
       path: PACKAGE_JSON_PATH,
       message: "prepare for new release",
       branch: PREPARE_RELEASE_PR_BRANCH_NAME,
-      content: existingChangesetFileContent,
+      content: existingChangesetFile.content,
       // 'sha' is required when we update the file, i.e the changeset file exists but its content is stale
       // See https://docs.github.com/en/rest/reference/repos#create-or-update-file-contents
       sha: existingChangesetFile?.sha,

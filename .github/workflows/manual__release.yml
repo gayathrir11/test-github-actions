@@ -38,7 +38,7 @@ jobs:
           developmentVersion="${a[0]}.${a[1]}.${nextPatch}-SNAPSHOT"
           echo "DEVELOPMENT_VERSION=${developmentVersion}" >> $GITHUB_ENV
       - name: Prepare release
-        run: npm run ${{ github.event.inputs.bump_type }}
+        run: npm release ${{ github.event.inputs.bump_type }}
       - name: Push Changes
         run: |
           git add .

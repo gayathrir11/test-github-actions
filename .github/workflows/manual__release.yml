@@ -10,9 +10,9 @@ on:
 
 jobs:
   release:
-    name: Release
-    runs-on: ubuntu-latest-4-cores
-    if: github.repository == 'gayathrir11/test-github-actions' # prevent running this action in forks
+    if: github.ref == 'refs/heads/main' && github.repository == 'gayathrir11/test-github-actions'
+    name: New Release
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4.1.1

@@ -1,7 +1,7 @@
 {
   "name": "@gayathri11/test-github-actions",
   "type": "module",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "description": "test app",
   "main": "index.js",
   "scripts": {},

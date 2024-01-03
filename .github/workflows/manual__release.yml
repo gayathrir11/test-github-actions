@@ -30,10 +30,10 @@ jobs:
           # See https://github.com/actions/setup-node/blob/main/docs/advanced-usage.md#publish-to-npmjs-and-gpr-with-npm
           registry-url: 'https://registry.npmjs.org'
       - name: Prepare release
-        run: npm version ${{ github.event.inputs.bump_type }} -m "Prepare for new release"
-      # - name: Push Changes
-      #   run: |
-      #     git push -f origin main
+        run: npm version ${{ github.event.inputs.bump_type }} -m "Bump version to %s"
+      - name: Push Changes
+        run: |
+          git push -f origin main
 
       - name: Install dependencies and build project
         run: |

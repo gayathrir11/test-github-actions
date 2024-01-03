@@ -43,7 +43,7 @@ jobs:
         run: |
           git add .
           git commit -m "Release commit"
-          git push origin main
+          git push -f origin main
 
       - name: Install dependencies and build project
         run: |

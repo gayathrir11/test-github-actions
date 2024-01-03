@@ -1,4 +1,4 @@
-name: (Manual) Release
+name: Release
 
 on:
   workflow_dispatch:
@@ -12,7 +12,7 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest-4-cores
-    if: github.repository == 'gayathrir11/test-gthub-actions' # prevent running this action in forks
+    if: github.repository == 'gayathrir11/test-github-actions' # prevent running this action in forks
     steps:
       - name: Checkout code
         uses: actions/checkout@v4.1.1
